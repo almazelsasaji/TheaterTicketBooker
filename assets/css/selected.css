@@ -1,0 +1,404 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #2d1b69 0%, #1a0d3a 100%);
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Left Side - Movie Poster */
+.poster-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #1a0d3a 0%, #0d0520 100%);
+}
+
+.movie-poster {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 600px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.poster-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.poster-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.3) 30%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0.95) 100%);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.production-logos {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.logo-left {
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffd700;
+}
+
+.logo-right {
+    font-size: 10px;
+    text-align: right;
+    line-height: 1.2;
+    color: #ccc;
+}
+
+.movie-title {
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    color: #ffd700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin: 20px 0;
+    letter-spacing: 2px;
+}
+
+.main-credits {
+    margin-bottom: 15px;
+}
+
+.credit-line {
+    font-size: 11px;
+    line-height: 1.3;
+    margin-bottom: 5px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.crew-credits {
+    margin-bottom: 15px;
+}
+
+.crew-line {
+    font-size: 9px;
+    line-height: 1.2;
+    margin-bottom: 3px;
+    color: #ccc;
+}
+
+.bottom-credits {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.musical-credit {
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffd700;
+}
+
+.con-logo {
+    font-size: 10px;
+    font-weight: bold;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* Right Side - Seat Selection */
+.seat-selection-section {
+    flex: 1;
+    padding: 40px;
+    background: linear-gradient(135deg, #2d1b69 0%, #1a0d3a 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.movie-info {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.movie-title-seat {
+    font-size: 36px;
+    font-weight: bold;
+    color: #a855f7;
+    margin-bottom: 15px;
+}
+
+.showtime-info {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 18px;
+    color: #ccc;
+}
+
+.showtime, .showdate {
+    background: rgba(168, 85, 247, 0.2);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid #a855f7;
+}
+
+.seat-grid-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.seat-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.seat {
+    width: 35px;
+    height: 35px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    border: 2px solid transparent;
+}
+
+.seat.available {
+    background: white;
+    border: 2px solid #10b981;
+    color: #10b981;
+}
+
+.seat.available:hover {
+    background: #10b981;
+    color: white;
+    transform: scale(1.1);
+}
+
+.seat.selected {
+    background: #10b981;
+    border: 2px solid #10b981;
+    color: white;
+    transform: scale(1.05);
+}
+
+.seat.sold {
+    background: #9ca3af;
+    border: 2px solid #9ca3af;
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.seat-legend {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 2px solid transparent;
+}
+
+.legend-color.selected {
+    background: #10b981;
+    border-color: #10b981;
+}
+
+.legend-color.available {
+    background: white;
+    border-color: #10b981;
+}
+
+.legend-color.sold {
+    background: #9ca3af;
+    border-color: #9ca3af;
+}
+
+.booking-summary {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.selected-seats {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.total-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #a855f7;
+}
+
+.pay-button {
+    width: 100%;
+    background: linear-gradient(45deg, #a855f7, #ec4899);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.pay-button:hover:not(.disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+}
+
+.pay-button.disabled {
+    background: #6b7280;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .poster-section {
+        padding: 10px;
+    }
+    
+    .movie-poster {
+        max-width: 300px;
+        height: 450px;
+    }
+    
+    .seat-selection-section {
+        padding: 20px;
+    }
+    
+    .seat-grid {
+        max-width: 400px;
+    }
+    
+    .seat {
+        width: 30px;
+        height: 30px;
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 768px) {
+    .movie-title {
+        font-size: 36px;
+    }
+    
+    .movie-title-seat {
+        font-size: 28px;
+    }
+    
+    .seat-grid {
+        max-width: 350px;
+    }
+    
+    .seat {
+        width: 25px;
+        height: 25px;
+        font-size: 8px;
+    }
+    
+    .seat-legend {
+        gap: 20px;
+    }
+    
+    .legend-item {
+        font-size: 12px;
+    }
+    
+    .legend-color {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .poster-section {
+        padding: 5px;
+    }
+    
+    .movie-poster {
+        max-width: 250px;
+        height: 400px;
+    }
+    
+    .movie-title {
+        font-size: 28px;
+    }
+    
+    .seat-selection-section {
+        padding: 15px;
+    }
+    
+    .seat-grid {
+        max-width: 300px;
+    }
+    
+    .seat {
+        width: 22px;
+        height: 22px;
+        font-size: 7px;
+    }
+    
+    .seat-legend {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

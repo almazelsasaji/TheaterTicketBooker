@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Payment - Movie Booking</title>
+    <link rel="stylesheet" href="../assets/css/payment.css">
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+          
+            <h1 class="payment-title">Choose Payment</h1>
+        </div>
+
+        <div class="payment-options">
+            <!-- Google Pay Option -->
+            <div class="payment-option" data-method="google-pay">
+                <div class="payment-info">
+                    <div class="payment-logo">
+                        <div class="google-pay-logo">
+                            <img src="../assets/img/google-pay_6124998.png" alt="Google Pay" class="pay-logo">
+                        </div>
+                    </div>
+                    <div class="payment-name">G Pay</div>
+                </div>
+                <div class="pay-button">
+                    <span>PAY</span>
+                </div>
+            </div>
+
+            <!-- Apple Pay Option -->
+            <div class="payment-option" data-method="apple-pay">
+                <div class="payment-info">
+                    <div class="payment-logo">
+                        <div class="apple-pay-logo">
+                            <img src="../assets/img/apple-pay_5968500.png" alt="Apple Pay" class="pay-logo">
+                        </div>
+                    </div>
+                    <div class="payment-name">Apple Pay</div>
+                </div>
+                <div class="pay-button">
+                    <span>PAY</span>
+                </div>
+            </div>
+
+            <!-- Paytm Option -->
+            <div class="payment-option" data-method="paytm">
+                <div class="payment-info">
+                    <div class="payment-logo">
+                        <div class="paytm-logo">
+                            <img src="../assets/img/paytm_825454.png" alt="Paytm" class="pay-logo">
+                        </div>
+                    </div>
+                    <div class="payment-name">Paytm</div>
+                </div>
+                <div class="pay-button">
+                    <span>PAY</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="booking-summary">
+            <div class="summary-item">
+                <span>Movie:</span>
+                <span id="movieName">FALIMY</span>
+            </div>
+            <div class="summary-item">
+                <span>Showtime:</span>
+                <span id="showtime">2:00 PM, 09-09-2025</span>
+            </div>
+            <div class="summary-item">
+                <span>Seats:</span>
+                <span id="selectedSeats">A1, A2, A3</span>
+            </div>
+            <div class="summary-item total">
+                <span>Total Amount:</span>
+                <span id="totalAmount">₹450</span>
+            </div>
+        </div>
+
+        <div class="back-button">
+            <button onclick="goBack()">← Back to Seat Selection</button>
+        </div>
+    </div>
+
+    <script>
+        // Payment method selection
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove active class from all options
+                document.querySelectorAll('.payment-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                
+                // Add active class to clicked option
+                this.classList.add('active');
+                
+                // Get payment method
+                const method = this.dataset.method;
+                processPayment(method);
+            });
+        });
+
+        // Process payment
+        function processPayment(method) {
+            const movieName = document.getElementById('movieName').textContent;
+            const showtime = document.getElementById('showtime').textContent;
+            const seats = document.getElementById('selectedSeats').textContent;
+            const total = document.getElementById('totalAmount').textContent;
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                alert(`Payment successful!\n\nMethod: ${method.toUpperCase()}\nMovie: ${movieName}\nShowtime: ${showtime}\nSeats: ${seats}\nAmount: ${total}\n\nYour booking is confirmed!`);
+            }, 1000);
+        }
+
+        // Go back to seat selection
+        function goBack() {
+            if (confirm('Are you sure you want to go back? Your seat selection will be lost.')) {
+                window.history.back();
+            }
+        }
+
+        // Load booking details from URL parameters or localStorage
+        function loadBookingDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const movie = urlParams.get('movie') || 'FALIMY';
+            const time = urlParams.get('time') || '2:00 PM';
+            const date = urlParams.get('date') || '09-09-2025';
+            const seats = urlParams.get('seats') || 'A1, A2, A3';
+            const total = urlParams.get('total') || '₹450';
+
+            document.getElementById('movieName').textContent = movie;
+            document.getElementById('showtime').textContent = `${time}, ${date}`;
+            document.getElementById('selectedSeats').textContent = seats;
+            document.getElementById('totalAmount').textContent = total;
+        }
+
+        // Initialize page
+        loadBookingDetails();
+    </script>
+</body>
+</html>

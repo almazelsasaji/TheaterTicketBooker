@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Movie Booking</title>
+    <link rel="stylesheet" href="../assets/css/signin.css">
+</head>
+<body>
+    <div class="signin-container">
+        <div class="form-wrapper">
+            <form class="contact-form" id="signinForm">
+                <h1 class="form-title">Contact details</h1>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Your email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Enter your email address"
+                        required
+                    >
+                    <span class="error-message" id="emailError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mobile" class="form-label">Mobile Number</label>
+                    <input 
+                        type="tel" 
+                        id="mobile" 
+                        name="mobile" 
+                        class="form-input" 
+                        placeholder="Enter your mobile number"
+                        required
+                    >
+                    <span class="error-message" id="mobileError"></span>
+                </div>
+                
+                <button type="submit" class="submit-button">Submit</button>
+            </form>
+        </div>
+        
+        <div class="back-to-home">
+            <a href="/index.html" class="back-link">← Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Form validation and submission
+        document.getElementById('signinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Clear previous errors
+            clearErrors();
+            
+            // Get form values
+            const email = document.getElementById('email').value.trim();
+            const mobile = document.getElementById('mobile').value.trim();
+            
+            let isValid = true;
+            
+            // Email validation
+            if (!email) {
+                showError('emailError', 'Email is required');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showError('emailError', 'Please enter a valid email address');
+                isValid = false;
+            }
+            
+            // Mobile validation
+            if (!mobile) {
+                showError('mobileError', 'Mobile number is required');
+                isValid = false;
+            } else if (!isValidMobile(mobile)) {
+                showError('mobileError', 'Please enter a valid mobile number');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Submit to backend
+                submitForm(email, mobile);
+            }
+        });
+        
+        // Email validation function
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        // Mobile validation function
+        function isValidMobile(mobile) {
+            const mobileRegex = /^[6-9]\d{9}$/;
+            return mobileRegex.test(mobile);
+        }
+        
+        // Show error message
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+        
+        // Clear all errors
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('.error-message');
+            errorElements.forEach(element => {
+                element.textContent = '';
+                element.style.display = 'none';
+            });
+        }
+        
+        // Submit form
+        async function submitForm(email, mobile) {
+            const submitButton = document.querySelector('.submit-button');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Submitting...';
+            submitButton.disabled = true;
+
+            try {
+                const res = await fetch('/api/signin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, mobile })
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.ok) {
+                    throw new Error(data.error || 'Sign in failed');
+                }
+
+                // Store token for later use
+                localStorage.setItem('authToken', data.token);
+                localStorage.setItem('userId', data.userId);
+
+                alert('Sign in successful!');
+                window.location.href = '/index.html';
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }
+        }
+        
+        // Real-time validation
+        document.getElementById('email').addEventListener('blur', function() {
+            const email = this.value.trim();
+            if (email && !isValidEmail(email)) {
+                showError('emailError', 'Please enter a valid email address');
+            } else {
+                document.getElementById('emailError').style.display = 'none';
+            }
+        });
+        
+        document.getElementById('mobile').addEventListener('blur', function() {
+            const mobile = this.value.trim();
+            if (mobile && !isValidMobile(mobile)) {
+                showError('mobileError', 'Please enter a valid mobile number');
+            } else {
+                document.getElementById('mobileError').style.display = 'none';
+            }
+        });
+        
+        // Format mobile number as user types
+        document.getElementById('mobile').addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, ''); // Remove non-digits
+            if (value.length > 10) {
+                value = value.substring(0, 10);
+            }
+            this.value = value;
+        });
+    </script>
+</body>
+</html>
